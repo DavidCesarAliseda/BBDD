@@ -10,10 +10,11 @@ El ejercicio estará correcto cuando importando el código a un GBD las tablas s
 
 CREATE TABLE personas
 (
-	dni INT PRIMARY KEY,
+	dni VARCHAR PRIMARY KEY,
 	nombre VARCHAR,
 	direccion VARCHAR,
 	poblacion VARCHAR,
-	codprovincia INT
+	codprovincia INT,
+	CONSTRAINT fk_prov_pers FOREIGN KEY (codprovi) REFERENCES provincias (codprovi) ON DELETE CASCADE
 	
 );

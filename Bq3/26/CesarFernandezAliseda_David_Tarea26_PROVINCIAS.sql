@@ -13,5 +13,5 @@ CREATE TABLE provincias
 (
 	codprovincia INT,
 	nom_provincia VARCHAR
-	CONSTRAINT fk_pers_prov FOREIGN KEY (codprovi) REFERENCES provincias (codprovi) ON DELETE CASCADE,
+	
 );

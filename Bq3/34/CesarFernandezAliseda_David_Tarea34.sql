@@ -1,6 +1,6 @@
-/*DROP DATABASE IF EXISTS david_Tarea34 ;
+DROP DATABASE IF EXISTS david_Tarea34 ;
 CREATE DATABASE david_Tarea34;
-USE david_Tarea34;*/
+USE david_Tarea34;
 
 /*Si una restricción de integridad se define mediante el comando CREATE TABLE o se añade con el comando ALTER TABLE, la condición se habilita automáticamente. Una restricción puede ser posteriormente deshabilitada con el comando ALTER TABLE.
 
@@ -21,15 +21,18 @@ Una vez creadas las tablas y comprobado que todas las restricciones están activ
 
 También debes subir rellenar una explicación de texto en la que cuentes que hay que tener en cuenta antes de deshabilitar la clave primaria.*/
 
-CREATE TABLE clientes(
-	dni VARCHAR(9) CONSTRAINT clientes_pk PRIMARY KEY,
-	nombre VARCHAR(50)
+CREATE TABLE clientes
+(
+	dni VARCHAR(9), 
+	nombre VARCHAR(50),
+	CONSTRAINT clientes_pk PRIMARY KEY
 );
 
-CREATE TABLE alquileres(
-	dni VARCHAR2(9) 
-	CONSTRAINT alquileres_fk1 REFERENCES clientes(dni),
-	cod_alquiler NUMBER(5) PRIMARY KEY
+CREATE TABLE alquileres
+(
+	dni VARCHAR(9), 
+	cod_alquiler NUMBER(5) PRIMARY KEY,
+	CONSTRAINT alquileres_fk1 REFERENCES clientes(dni)
 );
 
 ALTER TABLE alquileres

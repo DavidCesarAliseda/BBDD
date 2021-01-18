@@ -19,7 +19,7 @@ CREATE TABLE alumnos
 	curso INT(1) CHECK(curso <=3 AND curso >=1),
 	fecha_matri DATE DEFAULT (SYSDATE())
 );
-
+/*UPDATE alumnos SET */
 /*Convierte el dato apellido a mayuscula*/
 /*DELIMITER //
 CREATE TRIGGER transforma BEFORE INSERT ON alumnos
