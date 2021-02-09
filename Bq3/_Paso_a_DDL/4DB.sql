@@ -72,17 +72,17 @@ CREATE TABLE video
 	cod_video INT(10) PRIMARY KEY,
 	titulo_video VARCHAR(35) NOT NULL,
 	imagen VARCHAR(50) NOT NULL, 
-	video_ VARCHAR(50) NOT NULL,
+	archivo_video VARCHAR(50) NOT NULL,
 	duracion TIME NOT NULL
 );
 
-INSERT INTO video (cod_video, titulo_video, imagen, video_, duracion ) 
+INSERT INTO video (cod_video, titulo_video, imagen, archivo_video, duracion ) 
 VALUES ('1234','Interestellar', 'imagen1234', 'video1234', '2:12:54');
-INSERT INTO video (cod_video, titulo_video, imagen, video_, duracion ) 
+INSERT INTO video (cod_video, titulo_video, imagen, archivo_video, duracion ) 
 VALUES ('752','Unpause', 'imagen754', 'video754', '0:20:21');
-INSERT INTO video (cod_video, titulo_video, imagen, video_, duracion ) 
+INSERT INTO video (cod_video, titulo_video, imagen, archivo_video, duracion ) 
 VALUES ('12','El espejo', 'imagen12', 'video12', '0:57:14');
-INSERT INTO video (cod_video, titulo_video, imagen, video_, duracion ) 
+INSERT INTO video (cod_video, titulo_video, imagen, archivo_video, duracion ) 
 VALUES ('87','Batman', 'imagen87', 'video87', '2:7:18');
 
 
@@ -104,7 +104,7 @@ VALUES ('752','123','2019-9-22 09:06:55');
 INSERT INTO ven (cod_video, id_user, fecha_hora_visionado ) 
 VALUES ('12','9','2021-1-1 22:05:46');
 INSERT INTO ven (cod_video, id_user, fecha_hora_visionado ) 
-VALUES ('87','14','2020-14-7 16:32:25');
+VALUES ('87','14','2020-12-7 16:32:25');
 
 CREATE TABLE pelicula
 (
@@ -124,16 +124,26 @@ CREATE TABLE serie
 	nombre_serie VARCHAR(35) NOT NULL
 );
 
+INSERT INTO serie (cod_serie, nombre_serie) 
+VALUES ('6548', '30 Monedas');
+INSERT INTO serie (cod_serie, nombre_serie) 
+VALUES ('356', 'Como conoci a vuestra madre');
+
 CREATE TABLE episodio
 (
 	cod_video INT(10),
 	cod_serie INT(10),
-	n_episodios INT(3) NOT NULL,
-	n_temporadas INT(2) NOT NULL,
+	n_episodio INT(3) NOT NULL,
+	n_temporada INT(2) NOT NULL,
 	CONSTRAINT fk_video_episodio FOREIGN KEY (cod_video) REFERENCES video (cod_video) ON DELETE CASCADE ON UPDATE CASCADE,
 	CONSTRAINT fk_serie_episodio FOREIGN KEY (cod_serie) REFERENCES serie (cod_serie) ON DELETE CASCADE ON UPDATE CASCADE,
 	CONSTRAINT pk_episodio PRIMARY KEY (cod_video, cod_serie)
 );
+
+INSERT INTO episodio (cod_video, cod_serie, n_episodio, n_temporada) 
+VALUES ('12', '6548', '2', '1');
+INSERT INTO episodio (cod_video, cod_serie, n_episodio, n_temporada) 
+VALUES ('752', '356', '15', '9');
 
 CREATE TABLE guarda
 (
@@ -142,15 +152,31 @@ CREATE TABLE guarda
 	CONSTRAINT fk_video_guarda FOREIGN KEY (cod_video) REFERENCES video (cod_video) ON DELETE CASCADE ON UPDATE CASCADE,
 	CONSTRAINT fk_playlist_guarda FOREIGN KEY (id_playlist) REFERENCES playlist (id_playlist) ON DELETE CASCADE ON UPDATE CASCADE,
 	CONSTRAINT pk_guarda PRIMARY KEY (id_playlist, cod_video)
-
 );
 
+INSERT INTO guarda (id_playlist, cod_video) 
+VALUES ('102', '1234');
+INSERT INTO guarda (id_playlist, cod_video) 
+VALUES ('102', '87');
+INSERT INTO guarda (id_playlist, cod_video) 
+VALUES ('42', '12');
+INSERT INTO guarda (id_playlist, cod_video) 
+VALUES ('489', '752');
 
 CREATE TABLE genero
 (
 	cod_genero INT (10) PRIMARY KEY,
 	nombre_genero VARCHAR(10) NOT NULL
 );
+
+INSERT INTO genero (cod_genero, nombre_genero) 
+VALUES ('1', 'Humor');
+INSERT INTO genero (cod_genero, nombre_genero) 
+VALUES ('2', 'Superheroes');
+INSERT INTO genero (cod_genero, nombre_genero) 
+VALUES ('3', 'Intriga');
+INSERT INTO genero (cod_genero, nombre_genero) 
+VALUES ('4', 'Ciencia ficcion');
 
 CREATE TABLE pertenece 
 (
@@ -160,3 +186,12 @@ CREATE TABLE pertenece
 	CONSTRAINT fk_generopertenece FOREIGN KEY (cod_genero) REFERENCES genero (cod_genero) ON DELETE CASCADE ON UPDATE CASCADE,
 	CONSTRAINT pk_genero PRIMARY KEY (cod_video, cod_genero)
 );
+
+INSERT INTO pertenece (cod_video, cod_genero) 
+VALUES ('1234', '4');
+INSERT INTO pertenece (cod_video, cod_genero) 
+VALUES ('87', '2');
+INSERT INTO pertenece (cod_video, cod_genero) 
+VALUES ('12', '4');
+INSERT INTO pertenece (cod_video, cod_genero) 
+VALUES ('752', '1');
