@@ -83,6 +83,52 @@ BEGIN
 	END IF;
 
 END$$
+
+/*6. Crear un trigger para gestionar una copia de seguridad de todos los clientes:
+actuales y eliminados. Para cada uno especificaremos el nombre, el límite de crédito
+y la fecha de alta. Para almacenar estos datos dispondremos de la tabla «backupClientes». 
+Crear también un procedimiento almacenado que cree la nueva
+tabla y haga una copia de los clientes actuales.
+*/
+
+DELIMITER $$
+DROP PROCEDURE IF EXISTS crear_backupClientes$$
+CREATE PROCEDURE crear_backupClientes() 
+BEGIN
+	DECLARE limite_temp INT(10) DEFAULT 0;
+	DECLARE nombre_temp VARCHAR(30);
+	DECLARE numclie_temp INT DEFAULT 0;
+	DECLARE done INT DEFAULT 0;
+	DECLARE cur CURSOR FOR SELECT numclie FROM clientes; 
+	DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
+
+	CREATE TABLE backupClientes
+	(
+	id_copiaseguridad INT(10) AUTO_INCREMENT PRIMARY KEY,
+	nombre VARCHAR(30), 
+   limitecredito INT(10),
+	fecha_alta DATE DEFAULT SYSDATE() 
+	);
+	
+	OPEN cur;
+	REPEAT 
+		FETCH cur INTO numclie_temp;
+		IF NOT done THEN
+			SELECT clientes.nombre INTO nombre_temp
+			FROM clientes
+			WHERE clientes.numclie=numclie_temp;
+		
+			SELECT clientes.limitecredito INTO limite_temp
+			FROM clientes
+			WHERE clientes.numclie=numclie_temp;
+		
+			INSERT INTO backupClientes(nombre, limitecredito)
+			VALUES (nombre_temp,limite_temp);
+		END IF;
+	UNTIL done END REPEAT;
+	CLOSE cur;
+	
+END$$
 /*Mediante un procedimiento, añadir el campo orden con un valor consecutivo que
 ordene a los empleados según la antigüedad del contrato. Si dos empleados tienen
 la misma antigüedad se ordenarán alfabéticamente. Tras añadir el nuevo campo y
